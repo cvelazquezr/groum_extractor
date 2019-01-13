@@ -1,0 +1,15 @@
+# Folders
+extracted_code/
+out/
+phantom/
+packages/
+project/
+.idea/
+
+# Files
+tools/analysis.py
+tools/cfr-0.138.jar
+tools/decompiler.py
+tools/execute_ecosystem_jar.sh
+tools/sootclasses-trunk-jar-with-dependencies.jar
+.DS_Store

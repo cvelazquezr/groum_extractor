@@ -1,0 +1,127 @@
+syntax='proto2';
+
+message Acdfg {
+    message DataNode {
+        required uint64 id   = 1;
+        required string name = 2;
+        required string type = 3;
+
+        enum DataType {
+            DATA_VAR = 0;
+            DATA_CONST = 1;
+        }
+
+        optional DataType data_type = 4;
+    }
+
+    message MiscNode {
+        required uint64 id = 1;
+    }
+
+    message MethodNode {
+        required uint64 id       = 1;
+        optional uint64 assignee = 5;
+        optional uint64 invokee  = 2;
+        required string name     = 3;
+        repeated uint64 argument = 4;
+    }
+
+    message ControlEdge {
+        required uint64 id   = 1;
+        required uint64 from = 2;
+        required uint64 to   = 3;
+    }
+
+    message DefEdge {
+        required uint64 id   = 1;
+        required uint64 from = 2;
+        required uint64 to   = 3;
+    }
+
+    message UseEdge {
+        required uint64 id   = 1;
+        required uint64 from = 2;
+        required uint64 to   = 3;
+    }
+
+    message TransEdge {
+        required uint64 id   = 1;
+        required uint64 from = 2;
+        required uint64 to   = 3;
+    }
+
+    message ExceptionalControlEdge {
+        required uint64 id   = 1;
+        required uint64 from = 2;
+        required uint64 to   = 3;
+        repeated string exceptions = 4;
+    }
+
+    enum EdgeLabel {
+        DOMINATE = 0;
+        POSTDOMINATED = 1;
+    }
+
+    message LabelMap {
+        required uint64 edge_id = 1;
+        repeated EdgeLabel labels = 2;
+    }
+
+    message RepoTag {
+        optional string repo_name   = 1;
+        optional string user_name   = 2;
+        optional string url         = 3;
+        optional string commit_hash = 4;
+        optional string commit_date = 5;
+    }
+
+    message MethodBag {
+        repeated string method = 1;
+    }
+
+    message SourceInfo {
+        optional string package_name = 1;
+        optional string class_name = 2;
+        optional string method_name = 3;
+        optional uint32 class_line_number = 4;
+        optional uint32 method_line_number = 5;
+        optional string source_class_name = 6;
+        optional string abs_source_class_name = 7;
+    }
+
+    /* Graph representation */
+
+    /* Nodes */
+    repeated DataNode data_node = 1;
+    repeated MiscNode misc_node = 2;
+    repeated MethodNode method_node  = 3;
+
+    /* Edges */
+    repeated ControlEdge control_edge = 4;
+    repeated DefEdge def_edge = 5;
+    repeated UseEdge use_edge = 6;
+    repeated TransEdge trans_edge = 7;
+    repeated ExceptionalControlEdge exceptional_edge = 12;
+
+    /* labels on edges */
+    repeated LabelMap edge_labels = 11;
+
+    /* Provenance information */
+    optional RepoTag repo_tag = 8;
+    optional SourceInfo source_info  = 10;
+    optional string provenance_path = 13;
+
+    /* Used for faster lookup
+       [SM] It seems an hack introduced to compute the pair of isomorphisms.
+       To be removed.
+     */
+    optional MethodBag method_bag = 9;
+
+    message LineNum {
+        required uint64 id = 1;
+        required uint32 line = 2;
+    }
+
+    repeated LineNum node_lines = 14;
+
+}
